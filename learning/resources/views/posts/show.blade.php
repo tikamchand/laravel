@@ -10,9 +10,16 @@
 
 <h1>{{$posts['title']}}</h1>
 <p>{{$posts['content']}}</p>
-<p>Added {{$posts->created_at->diffForHumans()}}</p>
-@if(now()->diffForHumans($posts->created_at)< 5)
-<div class="alert alert-info">New !</div>
+{{-- <p>Added {{$posts->created_at->diffForHumans()}}</p> --}}
+<x-updated>
+    <x-slot name="slot">Added</x-slot>
+    {{-- <x-slot name="date">{{ 'date' => $post->created_at }}</x-slot> --}}
+    {{-- <x-slot name="name">{{ 'name' => $post->user->name }}</x-slot> --}}
+</x-updated>
+@if((new Carbon\Carbon())->diffInMinutes($posts->created_at)< 450)
+   <x-badge>
+    <x-slot name='slot'>new comment</x-slot>
+   </x-badge>
 @endif
 <h4>Comments</h4>
 @forelse($posts->comments as $comment)
