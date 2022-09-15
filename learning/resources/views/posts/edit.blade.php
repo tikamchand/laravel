@@ -5,6 +5,6 @@
     @csrf
     @method('put')
     @include('posts.partials.form')
-    <div><button type="submit" value="update">Update</button></div>
+    <div><button type="submit" value="update" class="btn btn-primary">Update</button></div>
 </form>
 @endsection

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -18,10 +19,17 @@ class DatabaseSeeder extends Seeder
     {
         
         // \App\Models\User::factory()->create([
-            //     'name' => 'Test User',
+            //     'name' => 'Test User',   
             //     'email' => 'test@example.com', 
             // ]);
-       $this->call([UserTableSeeder::class,BlogPostTableSeeder::class,CommentsTableSeeder::class]);    
+            Cache::tags(['blog-post'])->flush();
+       $this->call([
+        UserTableSeeder::class,
+        BlogPostTableSeeder::class,
+        CommentsTableSeeder::class,
+        TagsTableSeeder::class,
+        BlogPostTagTableSeeder::class,
+    ]);    
       
     // dd($posts);
    
