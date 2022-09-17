@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
         BlogPostTableSeeder::class,
         CommentsTableSeeder::class,
         TagsTableSeeder::class,
-        BlogPostTagTableSeeder::class,
+        BlogPostTagsTableSeeder::class,
     ]);    
       
     // dd($posts);

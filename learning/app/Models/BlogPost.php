@@ -23,9 +23,13 @@ class BlogPost extends Model
     }
     public function tags()
     {
-        return $this->belongsToMany('App\Models\Tag');
+        return $this->belongsToMany('App\Models\Tag', 'blog_post_tags')->withTimestamps();
+        // return $this->belongsToMany(Tag::class);
     }
-
+    public function image()
+    {
+        return $this->hasOne('App\Models\Image');
+    }
     public function scopeLatest(Builder $query)
     {
         return $query->orderBy(static::CREATED_AT, 'desc');
@@ -41,12 +45,13 @@ class BlogPost extends Model
         // static::addGlobalScope(new LatestScopes);
         static::deleting(function(BlogPost $blogPost){
             $blogPost->comments()->delete();
+            Cache::tags(['blog-post'])->forget("blog-post-{$blogPost->id}");
         });
         static::updating(function(BlogPost $blogPost){
-            Cache::forget("blog-post-{$blogPost->id}");
+            Cache::tags(['blog-post'])->forget("blog-post-{$blogPost->id}");
         });
         static::restoring(function(BlogPost $blogPost){
             $blogPost->comments()->restore();
         });
     }
-}
+} 

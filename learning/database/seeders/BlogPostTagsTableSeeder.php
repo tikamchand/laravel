@@ -7,7 +7,7 @@ use App\Models\Tag;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class BlogPostTagTableSeeder extends Seeder
+class BlogPostTagsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.

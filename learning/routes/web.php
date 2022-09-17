@@ -4,6 +4,7 @@ use App\Http\Controllers\AboutController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\PostTagController;
+use App\Http\Controllers\PostCommentController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
+// Route::get('/', function () {  
 //     return view('home.index', []);
 // })->name('home.index');
 // Route::view('/', 'home.index')->name('home.index');
@@ -90,4 +91,6 @@ Route::prefix('/fun')->name('fun.')->group(function() use($posts) {
       return response()->download(public_path('/daniel.jpg'), 'face.jpg');
     })->name('download');
   });
+Route::resource('posts.comments','App\Http\Controllers\PostCommentController')->only(['store']);
+Route::resource('users', 'UserController')->only('show','edit', 'update');
 Auth::routes();

@@ -5,10 +5,12 @@ use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\StorePost;
 use App\Models\BlogPost;
 use App\Models\comment;
+use App\Models\Image;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class PostsController extends Controller
 {
@@ -67,10 +69,29 @@ class PostsController extends Controller
      */
     public function store(StorePost $request)
     {
-        //    dd($request);
         $validate = $request->validated();
         $validate['user_id'] = $request->user()->id; 
         $post = BlogPost::create($validate);
+        if($request->hasFile('thumbnail')){
+           
+            $path = $request->file('thumbnail')->store('thumbnails');
+            $post->image()->save(
+              Image::create(['path'=> $path])
+            );
+        }
+        // http://localhost/laravel/learning/storage/app/thumbnails/104.jpg
+        //    $hasFile = $request->hasFile('thumbnail');
+        //    dump($hasFile);
+        //   if($hasFile){
+        //     $file = $request->file('thumbnail');
+        //     dump($file);
+        //     dump($file->getClientMimeType());
+        //     dump($file->getClientOriginalExtension());
+        //     $file->store('thumbnails');
+        //     $name = $file->storeAs('thumbnails', $post->id.'.'. $file->guessExtension());
+        //     dump(Storage::url($name));
+        //     echo asset('storage/app/thumbnails/104.jpg');
+        //   }
         // $post = new BlogPost();
         // $post->title = $validate['title'];
         // $post->content = $validate['content'];
@@ -89,7 +110,8 @@ class PostsController extends Controller
     {
         // abort_if(!isset($this->posts[$id]), 404);
         $blogPost = Cache::tags(['blog-post'])->remember("blog-post-${id}", 60, function() use($id){
-                    return BlogPost::with('comments')->findOrFail($id);
+                    return BlogPost::with('comments','tags','user','comments.user')
+                    ->findOrFail($id);
         });
         $sessionId = session()->getId();
         $counterKey = "blog-post-${id}-counter";

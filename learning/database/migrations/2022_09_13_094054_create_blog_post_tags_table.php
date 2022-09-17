@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    public $table = "blog_post_tags";
+    // protected $table = "blog_post_tag";
     /**
      * Run the migrations.
      *

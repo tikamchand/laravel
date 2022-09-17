@@ -28,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
         Blade::component('Components.badge', 'badge');
         Blade::component('Components.update', 'update');
         Blade::component('Components.tags', 'tags');
+        Blade::component('Components.errors', 'errors');
         view()->composer(['posts.index', 'posts.show'], ActivityComposer::class);
     }
 }

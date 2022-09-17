@@ -10,28 +10,42 @@
     <title>Laravel page - @yield('title')</title>
 </head>
 <body>
-    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4">
-        <h5 class="my-0 mr-md-auto font-weight-normal">Laravel App</h5>
-        <nav class="my-2 my-md-0 mr-md-3">
-            <a href="{{route('home.index')}}" class="p-2 text-dark">Home</a>
-            <a href="{{route('contact.index')}}" class="p-2 text-dark">Contact</a>
-            <a href="{{route('posts.index')}}"  class="p-2 text-dark">Blog posts</a>
-            <a href="{{route('posts.create')}}"  class="p-2 text-dark">Add Blog post</a>
-            @guest
-            @if (Route::has('register'))
-            <a href="{{route('register')}}" class="p-2 text-dark">Register</a>
-            @endif
-            <a href="{{route('login')}}"  class="p-2 text-dark">Login</a>
-            @else
-            <a href="{{route('logout')}}"  class="p-2 text-dark"
-            onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-            >Logout({{Auth::user()->name}})</a> 
-            <form id="logout-form" action="{{route('logout')}}" method="POST" style="display: none">
-            @csrf
-            </form>
-            @endguest
+    
+        <nav class="navbar navbar-expand-lg bg-dark">
+            <div class="container-fluid">
+            <h5 class="navbar-brand">Laravel App</h5>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                        <a href="{{route('home.index')}}" class="p-2 text-dark nav-link">Home</a> </li>
+                        <li class="nav-item">
+                        <a href="{{route('contact.index')}}" class="p-2 text-dark nav-link">Contact</a></li>
+                        <li class="nav-item">
+                        <a href="{{route('posts.index')}}"  class="p-2 text-dark nav-link">Blog posts</a></li>
+                        <li class="nav-item">
+                        <a href="{{route('posts.create')}}"  class="p-2 text-dark nav-link">Add Blog post</a></li>
+                    </ul>
+
+                    @guest
+                    @if (Route::has('register'))
+                        <a href="{{route('register')}}" class="p-2 text-dark">Register</a>
+                     @endif
+                        <a href="{{route('login')}}"  class="p-2 text-dark">Login</a>
+                    @else
+                        <a href="{{route('logout')}}"  class="p-2 text-dark"
+                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                        >Logout({{Auth::user()->name}})</a> 
+                        <form id="logout-form" action="{{route('logout')}}" method="POST" style="display: none">
+                            @csrf
+                        </form>
+                        @endguest
+                 </div>
+            </div>
         </nav>
-    </div>
+
     <div class="container">
         @if(session('status'))
         <div class="alert alert-success">{{session('status')}}</div>
