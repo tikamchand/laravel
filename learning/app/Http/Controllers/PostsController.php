@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 
 class PostsController extends Controller
 {
@@ -76,9 +77,10 @@ class PostsController extends Controller
            
             $path = $request->file('thumbnail')->store('thumbnails');
             $post->image()->save(
-              Image::create(['path'=> $path])
+              Image::make(['path'=> $path])
             );
         }
+        // dd(URL::asset('storage/'.$path));
         // http://localhost/laravel/learning/storage/app/thumbnails/104.jpg
         //    $hasFile = $request->hasFile('thumbnail');
         //    dump($hasFile);
@@ -178,6 +180,20 @@ class PostsController extends Controller
         $this->authorize('update', $post);
         $validate = $request->validated();
         $post->fill($validate);
+
+        if($request->hasFile('thumbnail')){
+            $path = $request->file('thumbnail')->store('thumbnails');
+            if($post->image){
+                Storage::delete($post->image->path);
+                $post->image->path = $path;
+                $post->image->save();
+            }else{
+                $post->image()->save(
+                    Image::make(['path'=> $path])
+                );
+            }
+        }
+
         $post->save();
         $request->session()->flash('success', 'Blog post has been saved Successfully');
         return redirect()->route('posts.show',['post'=>$post->id]);

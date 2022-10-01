@@ -14,22 +14,22 @@ class BlogPost extends Model
     use HasFactory;
     protected $fillable = ['title','content','user_id'];
     public function comments(){
-        return $this->hasMany('App\Models\Comment');
+        return $this->morphMany('App\Models\Comment', 'commentable')->latest();
         
-    }
+    } 
     public function user()
     {
         return $this->belongsTo('App\Models\User');
     }
     public function tags()
     {
-        return $this->belongsToMany('App\Models\Tag', 'blog_post_tags')->withTimestamps();
-        // return $this->belongsToMany(Tag::class);
+        return $this->morphToMany('App\Models\Tag', 'taggable')->withTimestamps();
     }
     public function image()
     {
-        return $this->hasOne('App\Models\Image');
+        return $this->morphOne('App\Models\Image', 'imageable');
     }
+
     public function scopeLatest(Builder $query)
     {
         return $query->orderBy(static::CREATED_AT, 'desc');
@@ -45,6 +45,7 @@ class BlogPost extends Model
         // static::addGlobalScope(new LatestScopes);
         static::deleting(function(BlogPost $blogPost){
             $blogPost->comments()->delete();
+            $blogPost->image()->delete();
             Cache::tags(['blog-post'])->forget("blog-post-{$blogPost->id}");
         });
         static::updating(function(BlogPost $blogPost){

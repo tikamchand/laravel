@@ -24,7 +24,7 @@
 {{-- <img src="{{ $posts->image->url() }}" alt=""> --}}
 <x-updated>
     <x-slot name="slot">Added</x-slot>
-    <x-slot name="date">{{ $posts->created_at }}</x-slot>
+    <x-slot name="date">{{ $posts->created_at }}</x-slot> 
     <x-slot name="name">{{ $posts->user->name }}</x-slot>
 </x-updated>
 <x-tags>

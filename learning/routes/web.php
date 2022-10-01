@@ -86,11 +86,12 @@ Route::prefix('/fun')->name('fun.')->group(function() use($posts) {
     Route::get('json', function() use($posts) {
       return response()->json($posts);
     })->name('json');
-  
+   
     Route::get('download', function() use($posts) {
       return response()->download(public_path('/daniel.jpg'), 'face.jpg');
     })->name('download');
   });
 Route::resource('posts.comments','App\Http\Controllers\PostCommentController')->only(['store']);
-Route::resource('users', 'UserController')->only('show','edit', 'update');
+Route::resource('users.comments','App\Http\Controllers\UserCommentController')->only(['store']);
+Route::resource('users', 'App\Http\Controllers\UserController')->only('show','edit', 'update');
 Auth::routes();

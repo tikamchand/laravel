@@ -9,6 +9,6 @@ class Tag extends Model
 {
     use HasFactory;
     public function blogPosts(){
-       return $this->belongsToMany('App\Models\BlogPost');
+       return $this->morphedByMany('App\Models\BlogPost', 'taggable')->withTimestamps()->as('tagged');
     }
 }

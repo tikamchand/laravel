@@ -35,11 +35,20 @@ class User extends Authenticatable
 
     public function blogPosts()
     {
-        return $this->hasMany('App\Models\BlogPost');
+        return $this->hasMany('App\Models\BlogPost'); 
     }
     public function comments(){
         return $this->hasMany('App\Models\Comment');
     }
+    public function commentsOn(){
+        return $this->morphMany('App\Models\Comment', 'commentable')->latest();
+        
+    } 
+    public function image()
+    {
+        return $this->morphOne('App\Models\Image', 'imageable');
+    }
+
     public function scopeWithMostBlogPosts(Builder $query)
     {
         return $query->withCount('blogPosts')->orderBy('blog_posts_count', 'desc');
@@ -51,6 +60,12 @@ class User extends Authenticatable
             $query->whereBetween(static::CREATED_AT, [now()->subMonths(1), now()]);
         }])->has('blogPosts', '>=', 2)
            ->orderBy('blog_posts_count', 'desc');
+    }
+    public function scopeThatHasCommentedOnPost(Builder $query, BlogPost $post){
+        $query->whereHas('comments', function ($query) use ($post){
+           return $query->where('commentable_id', '=', $post->id)
+           ->where('commentable_type', '=', BlogPost::class);
+        });
     }
     /**
      * The attributes that should be cast.
