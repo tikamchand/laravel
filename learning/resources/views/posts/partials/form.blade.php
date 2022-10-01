@@ -5,6 +5,7 @@
 {{-- @error('title')
 <div class="alert alert-danger">{{$message}}</div>
 @enderror --}}
+<x-errors></x-errors>
     <br />
     <div class="form-group">
         <label for="content">Content</label>
@@ -15,4 +16,3 @@
         <br />
         <input type="file" id="image" name="thumbnail" class="form-control-file mb-4"></input>
     </div>
-   <x-errors></x-errors>

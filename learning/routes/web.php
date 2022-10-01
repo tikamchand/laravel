@@ -25,10 +25,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/contact', function () {
         return view('home.contact', []);
     })->name('contact.index');
-    Route::get('/', [HomeController::class, 'home'])->name('home.index');
-    Route::get('/secret', [HomeController::class, 'secret'])->name('home.secret')->middleware('can:home.secret');
-    // Route::get('/contact', [HomeController::class, 'contact'])->name('contact.index');
-    Route::get('/about', AboutController::class)->name('about.index');
+Route::get('/', [HomeController::class, 'home'])->name('home.index');
+Route::get('/secret', [HomeController::class, 'secret'])->name('home.secret')->middleware('can:home.secret');
+// Route::get('/contact', [HomeController::class, 'contact'])->name('contact.index');
+Route::get('/about', AboutController::class)->name('about.index');
     $posts = [
     1 => [
         'title' => 'Intro to Laravel',
@@ -91,7 +91,7 @@ Route::prefix('/fun')->name('fun.')->group(function() use($posts) {
       return response()->download(public_path('/daniel.jpg'), 'face.jpg');
     })->name('download');
   });
-Route::resource('posts.comments','App\Http\Controllers\PostCommentController')->only(['store']);
+Route::resource('posts.comments','App\Http\Controllers\PostCommentController')->only(['index','store']);
 Route::resource('users.comments','App\Http\Controllers\UserCommentController')->only(['store']);
 Route::resource('users', 'App\Http\Controllers\UserController')->only('show','edit', 'update');
 Auth::routes();

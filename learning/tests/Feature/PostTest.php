@@ -10,7 +10,7 @@ use Tests\TestCase;
 class PostTest extends TestCase
 {
     use RefreshDatabase;
-    /**
+    /**  
      * A basic feature test example.
      *
      * @return void
@@ -34,7 +34,7 @@ class PostTest extends TestCase
             'title' => 'x',
             'content' => 'x'
         ];
-        $this->post('/posts',$params)
+        $this->post('/posts',$params) 
         ->assertStatus(302)
         ->assertSessionHas('errors');
         $messages = session('errors');

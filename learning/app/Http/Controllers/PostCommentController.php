@@ -12,19 +12,20 @@ use Illuminate\Support\Facades\Mail;
 
 class PostCommentController extends Controller
 {
-   public function __construct(){
-     $this->middleware('auth')->only(['store']);
-   }
+  public function __construct(){
+      $this->middleware('auth')->only(['store']);
+    }
+    public function index(BlogPost $post){
+      return $post->comments()->with('user')->paginate(5);
+    }
   public function store(BlogPost $post, StoreComment $request) {
-    $comment = $post->comments()->create([ 
-    'content' => $request->input('content'),
-    'user_id' => $request->user()->id
- ]);
-  Mail::to($post->user)->queue(
-      new CommentPostedMarkdown($comment)  
-  );
-    NotifyUsersPostWasCommented::dispatch($comment);
-   $request->session()->flash('status', 'Comment was created !');
-   return redirect()->back();
-   }
+      $comment = $post->comments()->create([ 
+      'content' => $request->input('content'),
+      'user_id' => $request->user()->id
+  ]);
+     event(new CommentPosted($comment));
+      NotifyUsersPostWasCommented::dispatch($comment);
+      return redirect()->back()
+      ->withStatus('Comment was created!');
+    }
 }

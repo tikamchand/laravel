@@ -29,13 +29,4 @@ class comment extends Model
    public function scopesLatest(Builder $query){
    return $query->orderBy(static::CREATED_AT, 'desc');
    }
-   public static function boot(){
-      parent::boot();
-      static::creating(function(comment $comment){
-         if($comment->commentable_type === App\Models\BlogPost::class){
-            Cache::tags(['blog-post'])->forget("blog-post-{$comment->commentable_id}");
-            Cache::tags(['blog-post'])->forget("mostCommented");
-         }
-     });
-   } 
 }

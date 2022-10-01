@@ -14,5 +14,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home', ['topic'=> 'Laravel']);
+});
+Route::get('/home', function () {
+    return response(['Hello World','this is another value','and another value'], 200)->header('Content-Type', 'text/plain');
 });
