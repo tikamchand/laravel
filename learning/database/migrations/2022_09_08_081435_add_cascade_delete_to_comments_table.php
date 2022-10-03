@@ -17,7 +17,6 @@ return new class extends Migration
            $table->dropForeign(['blog_post_id']);
            $table->foreign('blog_post_id')
            ->references('id')->on('blog_posts')
-           ->on('blog_posts')
            ->onDelete('cascade');
         });
     }
