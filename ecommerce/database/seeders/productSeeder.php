@@ -56,7 +56,7 @@ class productSeeder extends Seeder
          
        [
        'product_name' => 'pizza shoe',
-       'product_description' => "It's a pizza shoe designed by sanjeev kapoor you wear it and eat it at same time",
+       'product_description' => "It's a pizza shoe designed by sanjeev kapoor you wear it and don't try to eat.",
        'product_price' => '999',
        'product_quantity' => '5',
        'image' => '/img/shoe5.jpg'
