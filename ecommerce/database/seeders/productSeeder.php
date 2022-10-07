@@ -17,7 +17,7 @@ class productSeeder extends Seeder
     {
         DB::table('products')->insert(
              [
-            'product_name' => 'sports shoe',
+            'product_name' => 'Sports Shoe',
             'product_description' => "The shoes are designed to protect the wearer's foot from the hard, sharp rocks that make up the trail. The shoes have a thick, hard plastic covering that makes them extra durable.",
             'product_price' => '599',
             'product_quantity' => '12',
@@ -27,7 +27,7 @@ class productSeeder extends Seeder
         );   
     DB::table('products')->insert(
         [
-            'product_name' => 'nike para',
+            'product_name' => 'Nike Para',
             'product_description' => "It has a good grip on the bottom and it has good traction. It has a thick sole and it is not too tall. It is a great pair of shoes for any formal occasion, but it is also perfect for day-to-day use.",
             'product_price' => '799',
             'product_quantity' => '17',
@@ -36,7 +36,7 @@ class productSeeder extends Seeder
     );
     DB::table('products')->insert(
         [
-         'product_name' => 'formal black',
+         'product_name' => 'Formal Black',
          'product_description' => 'A white, pointy, clunky, sturdy shoe with a red strip on the side of the heel.',
          'product_price' => '899',
          'product_quantity' => '2',
@@ -45,7 +45,7 @@ class productSeeder extends Seeder
     );
     DB::table('products')->insert(
         [
-         'product_name' => 'multi-color sneaker',
+         'product_name' => 'Multi-color Sneaker',
          'product_description' => 'It is a great pair of shoes for any formal occasion, but it is also perfect for day-to-day use.',
          'product_price' => '399',
          'product_quantity' => '20',
@@ -55,7 +55,7 @@ class productSeeder extends Seeder
     DB::table('products')->insert(
          
        [
-       'product_name' => 'pizza shoe',
+       'product_name' => 'Pizza Shoe',
        'product_description' => "It's a pizza shoe designed by sanjeev kapoor you wear it and don't try to eat.",
        'product_price' => '999',
        'product_quantity' => '5',

@@ -14,14 +14,15 @@ return new class extends Migration
     public function up()
     {
         Schema::create('cart', function (Blueprint $table) {
+            $table->increments('id');
             $table->unsignedInteger('user_id');
-            $table->unsignedInteger('product_id');
+            $table->unsignedInteger('products_id');
             $table->unsignedInteger('quantity');
             $table->timestamps();
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('product_id')->references('id')->on('products');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('products_id')->references('id')->on('products')->onDelete('cascade');
         });
-        // Schema::rename('cart', 'carts');
+        Schema::rename('cart', 'carts');
     }
     // ON DELETE CASCADE;
     /**

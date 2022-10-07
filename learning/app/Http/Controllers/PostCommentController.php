@@ -15,9 +15,9 @@ class PostCommentController extends Controller
   public function __construct(){
       $this->middleware('auth')->only(['store']);
     }
-    public function index(BlogPost $post){
+  public function index(BlogPost $post){
       return $post->comments()->with('user')->paginate(5);
-    }
+  }
   public function store(BlogPost $post, StoreComment $request) {
       $comment = $post->comments()->create([ 
       'content' => $request->input('content'),

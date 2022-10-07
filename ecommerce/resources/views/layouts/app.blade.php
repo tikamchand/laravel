@@ -12,15 +12,15 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
-<body>
+<body class="bg-dark">
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <a class="navbar-brand" href="{{ route('home.index') }}">
                     {{-- {{ config('app.name', 'ShoeBox') }} --}}
                     ShoeBox
                 </a>
@@ -32,15 +32,20 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                          <a class="nav-link" aria-current="page" href="{{ route('products.index') }}">product</a>
+                          <a class="nav-link" aria-current="page" href="{{ route('products.index') }}"><i class="bi bi-bag"></i> Product</a>
+                        </li>
+                        {{-- {{ dd(auth()->user()->id) }} --}}
+                        @auth
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('cart.show', [auth()->user()->id]) }}"><i class="bi bi-cart"></i> Cart
+                                <span class="badge text-bg-secondary">{{ auth()->user()->product->count() }}</span>
+                            </a>
                         </li>
                         <li class="nav-item">
-                          <a class="nav-link" href="#">Cart</a>
+                            <a class="nav-link" href="{{ route('order.show', [auth()->user()->id]) }}"><i class="bi bi-bag-check"></i> Orders</a>
                         </li>
-                        <li class="nav-item">
-                          <a class="nav-link" href="#">Orders</a>
-                        </li>
-                      </ul>
+                        @endauth
+                    </ul>
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
@@ -82,7 +87,7 @@
         </nav>
 
         <main class="py-4">
-            @yield('content')
+          @yield('content')
         </main>
     </div>
 </body>

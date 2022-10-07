@@ -13,10 +13,7 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
     
     public function product(){
-        return $this->belongsToMany(Products::class);
-    }
-    public function cart(){
-        return $this->belongsToMany(cart::class);
+        return $this->belongsToMany(Products::class, 'carts');
     }
     /**
      * The attributes that are mass assignable.
