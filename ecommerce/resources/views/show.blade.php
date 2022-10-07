@@ -1,7 +1,14 @@
 @extends('layouts.app')
+<script>
+  setTimeout(function() 
+{ 
+    document.getElementById("status").style.display = "none"; 
+}, 
+2500);
+</script>
 @section('content')
 <div class="container">
-
+  
   <div class="card mb-3">
     <img src="{{ asset($product->image) }}" class="card-img-top" alt="Shoe image"  style="width: 100%;height:600px">
     <div class="card-body">
@@ -10,8 +17,29 @@
       <p class="card-text">{{ $product->product_description }}</p>
       <p class="card-text">Price: <b>Rs</b> {{ $product->product_price }}</p>
       <p class="card-text">Quantity: {{ $product->product_quantity }}</p>
-      <a href="#" class="btn btn-primary">Add to cart</a>
-    </div>
+      <form action="{{ route("cart.store")}}" method="POST">
+        @csrf
+        <input type="hidden" name="product_id" value="{{ $product->id }}">
+        <input type="number" class="form-control mb-3" name="quantity" id="exampleFormControlInput1" placeholder="Enter quantity"  style='width:20%' value="{{}}"> 
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+        @if(session()->has('status')){
+          {{-- {{ dd(session()->get('status')) }} --}}
+          <div class="alert alert-success alert-dismissible fade show" role="alert" id="status">
+            <strong>{{ session()->get('status') }}</strong>
+          </div>
+        }
+        @endif
+        <button type="submit" class="btn btn-primary">Add to cart</button>   
+      </form>
+      </div>
   </div>
 </div>
 @endsection
