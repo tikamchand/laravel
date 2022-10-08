@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->unsignedInteger('user_id');
-            $table->unsignedInteger('products_id');
+            $table->unsignedInteger('products_id')->nullable();
             $table->unsignedInteger('quantity');
             $table->string('shipping_details', 255);
-            $table->string('payment_details', 255);
+            $table->string('payment_details', 255)->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('products_id')->references('id')->on('products')->onDelete('cascade');
         });

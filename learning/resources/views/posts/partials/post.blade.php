@@ -36,8 +36,8 @@
             <h6 class="card-subtitle mb-2 text-muted">
                 What people are currently talking about
             </h6>
-        </div>
-        <ul class="list-group list-group-flush">
+            </div>
+           <ul class="list-group list-group-flush">
           @foreach ($mostCommented as $post) 
                 <li class="list-group-item"> 
                     <a href="{{ route('posts.show', ['post' => $post->id]) }}"> 
@@ -46,6 +46,6 @@
                 </li>
                 @endforeach
         </ul>
+       </div>
     </div>
-</div>
 </div> --}}

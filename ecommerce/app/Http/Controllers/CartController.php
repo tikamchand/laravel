@@ -19,8 +19,8 @@ class CartController extends Controller
         // $this->middleware('auth')
         // ->only(['show','store','delete']);
     }   
-    public function index($id)
-    {       
+    public function index()
+    {     
     }
      /**
      * Display the specified resource.
@@ -31,8 +31,7 @@ class CartController extends Controller
     public function show($id)
     { 
         $user = User::findOrFail($id);
-        $cart = cart::select('quantity','id')->where('user_id', $id)->get();
-       
+        $cart = cart::select('quantity','id')->where('user_id', $id)->get();  
         return view('cart', ['userProducts' => $user->product, 'user_cart' => $cart]);           
     }
      /**
@@ -49,11 +48,20 @@ class CartController extends Controller
     //     'quantity' => $request->input('quantity')
     // ]);0
     $pd = Products::findOrFail($request->input('product_id'));
-    // dd($pd->product_quantity <= $request->input('quantity'));
-    if($pd->product_quantity <= $request->input('quantity')){
+    // dd($pd->product_quantity > $request->input('quantity'));
+    if($pd->product_quantity > $request->input('quantity')){
         $request->session()->flash('status', 'Invalid product quantity');
-        return redirect()->back();
-    }else{
+        return redirect()->back();        
+    }
+    if(cart::where('products_id',$request->input('product_id'))->get()->count() != 0 ){
+        $cart = cart::where('products_id',$request->input('product_id'))->get();
+        $ct  = cart::findOrFail($cart[0]->id);
+        $ct->quantity = $request->input('quantity') + $ct->quantity;
+        $ct->save();
+        $pd->product_quantity = $pd->product_quantity - $request->input('quantity');
+        $pd->save();
+       return redirect()->back();
+    } else{
 
         $cart->user_id = auth()->user()->id;
         $cart->products_id = $request->input('product_id');
@@ -76,15 +84,12 @@ class CartController extends Controller
     public function destroy($id, Request $request)
     {
         $cart = cart::findOrFail($id);
-        // dd($cart);
-        // dd($cart->products_id);
         $pd = Products::findOrFail($cart->products_id);
-        // dd($pd);
         if($pd){
          $pd->product_quantity = $pd->product_quantity + $cart->quantity;
          $pd->save();
         }
-       $cart = cart::findOrFail($id);
+    //    $cart = cart::findOrFail($id);
        $cart->delete();
        return redirect()->back();
     }

@@ -13,7 +13,13 @@
         {{-- <p class="card-text">{{ \Illuminate\Support\Str::limit($product->product_description, 35, $end='...') }}</p> --}}
         {{-- <p class="card-text">{{ $product->product_description }}</p> --}}
         <div>Price: Rs {{ $product->product_price }}</div>
-        <div>In-Stock: {{ $product->product_quantity }}</div>
+        @if ($product->product_quantity == 0)
+        <div style="color: rgb(212, 20, 20)">
+          <strong>out of stock</strong>
+        </div>
+         @else          
+            <div>In-Stock: {{ $product->product_quantity }}</div>
+        @endif
         @auth
         <a href="{{ route('products.show', [$product->id])}}" class="btn btn-primary">Details</a>
         @else
