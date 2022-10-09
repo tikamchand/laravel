@@ -24,12 +24,21 @@
           </div>        
           <div class="mb-3">
               <label for="exampleInputPassword1" class="form-label">Card No</label>
-              <input name="cardNo" class="form-control" id="exampleInputPassword1"></input>
+              <input name="cardNo" class="form-control" min="16" max="16" id="exampleInputPassword1"></input>
           </div>
           <div class="mb-3">
               <label for="exampleInputPassword1" class="form-label">CVV</label>
-              <input name="cvvNo" class="form-control" id="exampleInputPassword1"></input>
-          </div>        
+              <input name="cvvNo" class="form-control" min="3" max="3" id="exampleInputPassword1"></input>
+          </div>      
+          @if ($errors->any())
+              <div class="alert alert-danger">
+                  <ul>
+                      @foreach ($errors->all() as $error)
+                          <li>{{ $error }}</li>
+                      @endforeach
+                  </ul>
+              </div>
+           @endif  
           <button type="submit" class="btn btn-primary"><i class="bi bi-credit-card"></i> Pay via card</button>
       </form>
 </div>

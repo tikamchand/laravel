@@ -48,8 +48,7 @@ class CartController extends Controller
     //     'quantity' => $request->input('quantity')
     // ]);0
     $pd = Products::findOrFail($request->input('product_id'));
-    // dd($pd->product_quantity > $request->input('quantity'));
-    if($pd->product_quantity > $request->input('quantity')){
+    if($pd->product_quantity < $request->input('quantity')){
         $request->session()->flash('status', 'Invalid product quantity');
         return redirect()->back();        
     }

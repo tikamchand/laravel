@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
 
-    <div id="carouselExampleDark" class="carousel carousel slide" data-bs-ride="carousel" style="width: 100%;">
+    <div id="carouselExampleDark" class="carousel carousel slide" data-bs-ride="carousel" data-bs-ride="true" style="width: 100%;">
         <div class="carousel-indicators">
       <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
       <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
@@ -25,14 +25,14 @@
           <p>Some representative placeholder content for the second slide.</p>
         </div>
       </div>
-      <div class="carousel-item">
+      <div class="carousel-item" data-bs-interval="3000">
         <img src="{{ asset('/img/slide3.jpg') }}" class="d-block w-100" alt="..." style="height:740px;">
         <div class="carousel-caption d-none d-md-block">
           <h5>Third slide label</h5>
           <p>Some representative placeholder content for the third slide.</p>
         </div>
       </div>
-      <div class="carousel-item">
+      <div class="carousel-item" data-bs-interval="4000">
           <img src="{{ asset('/img/slide4.jpg') }}" class="d-block w-100" alt="..." style="height:740px;">
         <div class="carousel-caption d-none d-md-block">
           <h5>Fourth slide label</h5>

@@ -42,7 +42,9 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('order.show', [auth()->user()->id]) }}"><i class="bi bi-bag-check"></i> Orders</a>
+                            <a class="nav-link" href="{{ route('order.show', [auth()->user()->id]) }}"><i class="bi bi-bag-check"></i> Orders
+                            <span class="badge text-bg-secondary">{{ auth()->user()->order->count() }}</span>
+                            </a>
                         </li>
                         @endauth
                     </ul>
@@ -85,8 +87,15 @@
                 </div>
             </div>
         </nav>
-
-        <main class="py-4">
+        <!-- <div class="container mt-3">
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ route('home.index') }}">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Library</li>
+                </ol>
+            </nav>
+        </div> -->
+            <main class="py-4">
           @yield('content')
         </main>
     </div>
