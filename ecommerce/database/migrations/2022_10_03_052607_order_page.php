@@ -19,9 +19,9 @@ return new class extends Migration
             $table->unsignedInteger('quantity');
             $table->string('shipping_details', 255);
             $table->string('payment_details', 255)->nullable();
-            $table->unsignedInteger('phone')->nullable();
-            $table->unsignedInteger('cardNo')->nullable();
-            $table->string('name')->nullable(); 
+            $table->string('phone')->nullable();
+            $table->string('cardNo')->nullable();
+            $table->string('name',50)->nullable(); 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('products_id')->references('id')->on('products')->onDelete('cascade');
         });

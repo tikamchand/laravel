@@ -9,6 +9,7 @@ use App\Models\Products;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
@@ -19,7 +20,7 @@ class OrderController extends Controller
     } 
     public function index(cart $cart){
         DB::connection()->enableQueryLog();
-        $cart = cart::all();
+        $cart = User::find(auth()->user()->id)->cart()->get();;
         $total = 0;
         for($i=0;$i<$cart->count();$i++){
             $pd = Products::findOrFail($cart[$i]->products_id);
@@ -35,16 +36,15 @@ class OrderController extends Controller
      */
     public function store(order $order, orderProduct $request)
     {
-        DB::connection()->enableQueryLog();
-        $total = 0;
-        $cart = cart::all();
-        for($i=0;$i < $cart->count();$i++){
-            $pd = Products::findOrFail($cart[$i]->products_id);
-            $total += $pd->product_price * $cart[$i]->quantity;            
-        }
-        // dd($total);
-        foreach ($cart as $ct){
-            // dd($cart);
+
+        $cart = User::findOrFail(auth()->user()->id)->cart;;
+        // $total = 0;
+        // foreach($cart as $cartItem){
+        //     $pd = Products::findOrFail($cartItem->products_id);
+        //     $total += $pd->product_price * $cartItem->quantity;
+        // }
+        if($request->input('cardNo') == '4242'){
+            foreach ($cart as $ct){
             $pd = Products::findOrFail($ct->products_id);
             $order->create([
                 'user_id' => auth()->user()->id,
@@ -59,10 +59,15 @@ class OrderController extends Controller
         }
         foreach($cart as $ct){
             $ct = cart::findOrFail($ct->id);
-           $ct->delete();
+            $ct->delete();
         }
+        return redirect()->route('order.show', [auth()->user()->id]);
+    }else{
+        $request->session()->flash('status', 'Invalid card credential !');
+       return redirect()->back();
+    }
         
-        return view('home');
+    //    redirect(route('order.show',[auth()->user()->id]));
     }
       /**
      * Display the specified resource.
@@ -72,9 +77,20 @@ class OrderController extends Controller
      */
     public function show($id)
     { 
-        $user = User::findOrFail($id);
+        $user = Auth::user();
         $order = order::select('*')->where('user_id', $id)->get();
         // dd($order);  
         return view('orders.showOrder',['userOrders' => $user->order, 'orders' => $order]);
+    }
+    public function destroy($id)
+    {
+        $order = order::findOrFail($id);
+        $pd = Products::findOrFail($order->products_id);
+        if($pd){
+         $pd->product_quantity = $pd->product_quantity + $order->quantity;
+         $pd->save();
+        }
+       $order->delete();
+       return redirect()->back();
     }
 }

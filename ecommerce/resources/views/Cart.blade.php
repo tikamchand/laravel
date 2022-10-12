@@ -1,4 +1,10 @@
 @extends('layouts.app')
+<style>
+  .card:hover{
+    transform: scale(1.03);
+    transition: all 0.3s ease-in-out;
+  }
+</style>
 @section('content')
 <div class="container">
   <h2>Cart</h2>
@@ -13,11 +19,11 @@
     <div class="card mb-3" style="width: 670px;">
       <div class="row g-0">
           <div class="col-md-5">
-            <img src="{{ asset($product->image) }}" class="img-fluid rounded-start" alt="shoe image" style="height=100%"">
+            <img src="{{ asset($product->image) }}"  class="img-fluid rounded-start" alt="shoe image" style="height=100%"">
           </div>
           <div class="col-md-7">
               <div class="card-body">
-                  <h5 class="card-title">{{ $product->product_name}}</h5>
+                  <h5><a class="" href="{{ route('products.show', [$product->id])}}" class="card-title" style="text-decoration: none">{{ $product->product_name}}</a></h5>
                   <p class="card-text mb-1"><b>Quantity:</b> {{ $user_cart[$index]->quantity}}</p>
                   <p class="card-text mb-1"><b>Price:</b> {{ $product->product_price}}</p>
                   <p class="card-text mb-1"><b>Total Price:</b> Rs {{ $user_cart[$index]->quantity * $product->product_price}}</p>
@@ -28,7 +34,7 @@
                       <form action="{{ route('cart.destroy', [$user_cart[$index]->id]) }}" method="POST">
                         @csrf
                         @method('DELETE')
-                        <button type="submit"  class="btn btn-danger mt-2"><i class="bi bi-trash3"></i> Delete</button>
+                        <button type="submit"  class="btn btn-danger mt-2"><i class="bi bi-trash3"></i>Remove from cart</button>
                       </form>
                   </div>
               </div>
@@ -54,15 +60,20 @@
         <tbody>
           @foreach ($userProducts as $index => $product)
           <tr>
-            <th scope="row"><i class="bi bi-caret-right-fill"></i></th>
+            <th scope="row">{{ $index + 1}}</i></th>
             <td>{{ $product->product_name }}</td>
             <td>Rs {{ $user_cart[$index]->quantity * $product->product_price }}</td>
           </tr>
           @endforeach
-
+          {{-- <tr>
+              <th scope="row"><i class="bi bi-cart-check"></i></i></th>
+              <td>Total price</td>
+              <td>Rs {{ $total }}</td>
+            </tr> --}}
         </tbody>
       </table>      
       <a href="{{ route('order.index')}}" class="btn btn-primary">Order</a>
+      <b class="float-end"> Rs {{ $total }}</b>
     </div>
   </div>
   @endif

@@ -1,8 +1,21 @@
 @extends('layouts.app')
+<style>
+    .card:hover{
+      transform: scale(1.03);
+      transition: all 0.3s ease-in-out;
+    }
+  </style>
 @section('content')
 <div class="container">
     <h3>Your orders</h3>
 </div>
+@if ($userOrders->count() == 0)
+<div class="container">
+    <div class="alert alert-info" role="alert">
+        <h3> Nothing in your orders! <a href="{{ route('products.index') }}">Click to buy</a></h3>
+    </div>
+</div>
+    @else
 <div class="container d-flex flex-column align-items-center">
     @foreach ($userOrders as $index => $userOrder)
     <div class="card mb-3" style="min-width: 750px;">
@@ -19,11 +32,16 @@
                         <div class="card-text"><b>Total payment:</b> {{ $orders[$index]->payment_details}}</div>
                         <div class="card-text"><b>Shipping Address:</b> {{ $orders[$index]->shipping_details}}</div>
                         <div class="card-text"><small class="text-muted">Order On {{ $orders[$index]->created_at->format('m/d/Y')}}</small></div>
-                        <button class="btn btn-danger">Cancel order</button>
+                        <form action="{{ route('order.destroy',[$orders[$index]->id]) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit"  class="btn btn-danger mt-2"><i class="bi bi-trash3"></i> Cancel order</button>
+                          </form>
                     </div>
                 </div>
             </div>
         </div>
         @endforeach
-</div>
+    </div>
+        @endif
 @endsection

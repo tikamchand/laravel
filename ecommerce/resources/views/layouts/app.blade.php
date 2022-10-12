@@ -12,9 +12,18 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    <script>
+        $( '.navbar-nav .nav-item a' ).on('click',function () {
+            $( '.navbar-nav' ).find( 'nav-link .active' )
+            .removeClass( 'active' );
+            $( this ).parent( 'li' ).addClass( 'active' );
+        });
+    </script>
+    
 </head>
 <body class="">
     <div id="app">

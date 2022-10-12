@@ -7,6 +7,8 @@ use App\Models\cart;
 use App\Models\Products;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class CartController extends Controller
 {
@@ -30,9 +32,19 @@ class CartController extends Controller
      */
     public function show($id)
     { 
-        $user = User::findOrFail($id);
-        $cart = cart::select('quantity','id')->where('user_id', $id)->get();  
-        return view('cart', ['userProducts' => $user->product, 'user_cart' => $cart]);           
+        DB::connection()->enableQueryLog();
+        $cart =Auth::user()->cart;
+        // dd('carat');
+        $total = 0;
+        foreach($cart as $cartItem){
+            // $pd = Products::findOrFail($cartItem->products_id);
+            // dd($cartItem->products_id); 
+            $pd = $cartItem->product;
+            // dd($pd);
+            $total += $pd->product_price * $cartItem->quantity;
+        }
+        $user = Auth::user(); 
+        return view('cart', ['userProducts' => $user->product, 'user_cart' => $cart, 'total'=>$total]);           
     }
      /**
      * Store a newly created resource in storage.
@@ -46,33 +58,44 @@ class CartController extends Controller
     //     'user_id' => auth()->user()->id,
     //     'products_id' => $request->input('product_id'),
     //     'quantity' => $request->input('quantity')
-    // ]);0
+    // ]);
     $pd = Products::findOrFail($request->input('product_id'));
-    if($pd->product_quantity < $request->input('quantity')){
-        $request->session()->flash('status', 'Invalid product quantity');
-        return redirect()->back();        
+    if($pd->product_quantity < $request->input('quantity') || $request->input('quantity') < 0){
+        $request->session()->flash('status','Invalid product quantity','color' ,'danger');
+        $request->session()->flash('color' ,'danger');
+        return redirect()->back();       
     }
-    if(cart::where('products_id',$request->input('product_id'))->get()->count() != 0 ){
-        $cart = cart::where('products_id',$request->input('product_id'))->get();
-        $ct  = cart::findOrFail($cart[0]->id);
-        $ct->quantity = $request->input('quantity') + $ct->quantity;
-        $ct->save();
-        $pd->product_quantity = $pd->product_quantity - $request->input('quantity');
-        $pd->save();
-       return redirect()->back();
-    } else{
-
+        $cartItem = User::findOrFail(auth()->user()->id)->cart;
+        // dd($cartItem);
+        if($cartItem->count() != 0){                                        
+            foreach($cartItem as $item){
+                if($item->products_id == $request->input('product_id')){
+                $ct  = cart::findOrFail($item->id);        
+                $ct->quantity = $request->input('quantity') ;
+                $ct->save();
+                $diff =  $ct->quantity - $request->input('quantity');
+                $pd->product_quantity = $pd->product_quantity + $diff;
+                $pd->save();
+                $request->session()->flash('status', 'Product added to cart !');
+                $request->session()->flash('color','success');
+                // return redirect()->route('cart.show', [auth()->user()->id]);
+                return redirect()->back();
+            }
+        }
+     }     
+    
         $cart->user_id = auth()->user()->id;
-        $cart->products_id = $request->input('product_id');
+       $cart->products_id = $request->input('product_id');
        $cart->quantity = $request->input('quantity');
        $cart->save();
        if($pd){
-        $pd->product_quantity = $pd->product_quantity - $request->input('quantity');
-        $pd->save();
-       }
-       $request->session()->flash('status', 'Product added to cart !');
-       return redirect()->back();
-    }
+           $pd->product_quantity = $pd->product_quantity - $request->input('quantity');
+           $pd->save();
+        }
+        $request->session()->flash('status', 'Product added to cart !');
+        $request->session()->flash('color','success');
+        return redirect()->back();
+    //    return redirect()->route('cart.show', [auth()->user()->id]);
     }
      /**
      * Remove the specified resource from storage.
@@ -88,7 +111,6 @@ class CartController extends Controller
          $pd->product_quantity = $pd->product_quantity + $cart->quantity;
          $pd->save();
         }
-    //    $cart = cart::findOrFail($id);
        $cart->delete();
        return redirect()->back();
     }

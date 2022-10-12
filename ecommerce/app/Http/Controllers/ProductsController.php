@@ -7,6 +7,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\count;
+use App\Models\cart;
+use Illuminate\Support\Facades\Auth;
 
 class ProductsController extends Controller
 {
@@ -28,7 +30,17 @@ class ProductsController extends Controller
      */
     public function show($id)
     {
+        DB::connection()->enableQueryLog();
         $product =  Products::findOrFail($id);
-        return view('show',['product' => $product] );
+        $user =  User::findOrFail(auth()->user()->id)->cart;
+         foreach( $user as $item){
+            // dd($item);
+            if($item->products_id == $product->id){
+                return view('show',['product' => $product,'cart' => $item] );
+            }
+         }
+         $item = null;
+        // $cart = cart::where('products_id',$product->id)->get();
+        return view('show',['product' => $product,'cart' => $item] );
     }
 }

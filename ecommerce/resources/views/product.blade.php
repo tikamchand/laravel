@@ -1,6 +1,12 @@
 @extends('layouts.app')
-
+<style>
+  .card:hover{
+    transform: scale(1.03);
+    transition: all 0.3s ease-in-out;
+  }
+</style>
 @section('content')
+
 <div class="container">
   <h2>Products:</h2>
 <div class="card-deck" style="display: flex; flex-wrap:wrap">

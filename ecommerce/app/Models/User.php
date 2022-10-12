@@ -18,6 +18,9 @@ class User extends Authenticatable
     public function order(){
         return $this->belongsToMany(Products::class, 'orders');
     }
+    public function cart(){
+        return $this->hasMany(cart::class);
+    }
     /**
      * The attributes that are mass assignable.
      *

@@ -17,12 +17,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/home', function () {
-//     return view('home');
-// });
-// Route::get('/', function () {
-//     return view('home');
-// });
+
+Route::get('/', function () {
+    return view('home');
+});
 // Route::resource('home.index',  HomeController::class, auth()->user()->id);
 Route::resource('home',  HomeController::class);
 Route::resource('products',  ProductsController::class);

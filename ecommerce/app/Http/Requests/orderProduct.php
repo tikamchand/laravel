@@ -26,7 +26,7 @@ class orderProduct extends FormRequest
         return [
                 // 'shipping_details' => 'required',
                 'phone'=>'required|min:10|max:10',
-                'cardNo' =>'required|min:8|max:8',
+                'cardNo' =>'required',
                 'name' => 'required'
         ];
     }
